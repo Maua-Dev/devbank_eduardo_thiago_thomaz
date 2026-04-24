@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 const Header = () => {
+    const navigate = useNavigate();
     return(
         <header className="flex items-center justify-between bg-blue-500 px-6 py-3">
             <nav>
                 <ul>
-                    <li className="text-white font-bold text-6xl">DevBank</li>
+                    <li onClick={() => navigate("/")} className="text-white font-bold text-6xl">DevBank</li>
                 </ul>
             </nav>
 
