@@ -3,6 +3,7 @@ import Header from "./components/header"
 import Home from "./pages/home";
 import { Withdraw } from './pages/withdraw'
 import { Deposit } from "./pages/deposit";
+import { History } from './pages/history'
 import { useState } from "react";
 
 function App() {
@@ -21,6 +22,8 @@ function App() {
         
         {/* "/deposit" — Deposit page, receives balance and a function to add */}
         <Route path="/deposit" element={<Deposit balance={balance} onDeposit={(v) => setBalance(balance + v)} />} />
+        
+        <Route path="/history" element={<History />} />
       </Routes>
     </BrowserRouter>
   )
