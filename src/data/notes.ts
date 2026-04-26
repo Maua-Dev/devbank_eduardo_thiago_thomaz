@@ -8,8 +8,8 @@ import twohundred from "../assets/two_hundred_reais.png"
 
 /* list notes */
 export const notes = [ 
-    { value: 2, image: two },
-    { value: 5, image: five },
+    { value: 2, image: two }, // first key 
+    { value: 5, image: five }, // second key... 
     { value: 10, image: ten },
     { value: 20, image: twenty },
     { value: 50, image: fifty },

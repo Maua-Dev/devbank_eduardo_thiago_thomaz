@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom"; // enables navigation between pa
 import { notes } from "../data/notes"; // list of bills with image and value
 
 // defines what props this component receives from App.tsx
-interface WithdrawProps {
+interface DepositProps {
     balance: number; // current balance coming from App.tsx
-    onWithdraw: (value: number) => void; // function that sends the total to App.tsx to subtract from balance
+    onDeposit: (value: number) => void; // function that sends the total to App.tsx to add to balance
 };
 
-export const Withdraw = ({ balance, onWithdraw }: WithdrawProps) => {
+export const Deposit = ({ balance, onDeposit }: DepositProps) => {
     const navigate = useNavigate(); // used to navigate between pages
 
     // tracks how many of each bill the user selected
@@ -27,19 +27,18 @@ export const Withdraw = ({ balance, onWithdraw }: WithdrawProps) => {
         return total + (quantities[note.value] ?? 0) * note.value;
     }, 0);
 
-    // runs when user clicks "Sacar"
-    const handleWithdraw = () => {
+    // runs when user clicks "Depositar"
+    const handleDeposit = () => {
         if (totalValue === 0) return alert("Selecione ao menos uma cédula."); // nothing selected
-        if (totalValue > balance) return alert("Saldo insuficiente"); // not enough balance
-        onWithdraw(totalValue); // sends total to App.tsx → App subtracts from balance
+        onDeposit(totalValue); // sends total to App.tsx → App adds to balance
         setQuantities({}); // resets all bill quantities to 0
-        alert("Saque realizado com sucesso!");
+        alert("Depósito realizado com sucesso!");
     };
 
     return (
         <main>
-            {/* shows current balance and total to be withdrawn */}
-            <Balance balance={balance} totalValue={totalValue} label="Valor a ser sacado:" />
+            {/* shows current balance and total to be deposited */}
+            <Balance balance={balance} totalValue={totalValue} label="Valor a ser depositado:" />
 
             <section className="h-15 mx-20 my-10 flex justify-center items-center">
                 <p className="text-5xl font-serif">Selecione as cédulas e a quantidade que você deseja.</p>
@@ -62,7 +61,7 @@ export const Withdraw = ({ balance, onWithdraw }: WithdrawProps) => {
 
             <section className="flex justify-center items-center my-8">
                 <button onClick={() => navigate("/")} className="w-60 h-20 bg-blue-500 text-white rounded-xl mx-10 cursor-pointer"><p className="text-4xl">Voltar</p></button>
-                <button onClick={handleWithdraw} className="w-60 h-20 bg-blue-500 text-white rounded-xl mx-10 cursor-pointer"><p className="text-4xl">Sacar</p></button>
+                <button onClick={handleDeposit} className="w-60 h-20 bg-blue-500 text-white rounded-xl mx-10 cursor-pointer"><p className="text-4xl">Depositar</p></button>
             </section>
         </main>
     );
