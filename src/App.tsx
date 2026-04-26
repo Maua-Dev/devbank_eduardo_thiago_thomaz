@@ -8,22 +8,16 @@ import { useState } from "react";
 
 function App() {
   // Holds the balance state — starts at R$1000
-  const [balance, setBalance] = useState(1000); // use all pages
+  const [balance, setBalance] = useState(1000);
 
   return (
     <BrowserRouter> {/* enables navigation between pages */}
       <Header /> {/* shows on every page */}
       <Routes> {/* decides which page to render based on the URL */}
-        {/* "/" — Home page */}
-        <Route path="/" element={<Home />} /> 
-        
-        {/* "/withdraw" — Withdraw page, receives balance and a function to subtract */}
-        <Route path="/withdraw" element={<Withdraw balance={balance} onWithdraw={(v) => setBalance(balance - v)} />} />
-        
-        {/* "/deposit" — Deposit page, receives balance and a function to add */}
-        <Route path="/deposit" element={<Deposit balance={balance} onDeposit={(v) => setBalance(balance + v)} />} />
-        
-        <Route path="/history" element={<History />} />
+        <Route path="/" element={<Home />} /> {/* Home page */}
+        <Route path="/withdraw" element={<Withdraw balance={balance} onWithdraw={(v) => setBalance(balance - v)} />} /> {/* Withdraw page, receives balance and a function to subtract */}
+        <Route path="/deposit" element={<Deposit balance={balance} onDeposit={(v) => setBalance(balance + v)} />} /> {/* Deposit page, receives balance and a function to add */}
+        <Route path="/history" element={<History />} /> {/* History page */}
       </Routes>
     </BrowserRouter>
   )
