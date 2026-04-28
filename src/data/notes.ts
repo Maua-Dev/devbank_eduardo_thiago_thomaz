@@ -1,3 +1,4 @@
+// imports bill images from assets folder
 import two from "../assets/two_reais.png"
 import five from "../assets/five_reais.png"
 import ten from "../assets/ten_reais.png"
@@ -6,13 +7,16 @@ import fifty from "../assets/fifty_reais.png"
 import onehundred from "../assets/one_hundred_reais.png"
 import twohundred from "../assets/two_hundred_reais.png"
 
-/* list notes */
-export const notes = [ 
-    { value: 2, image: two }, // first key 
-    { value: 5, image: five }, // second key... 
-    { value: 10, image: ten },
-    { value: 20, image: twenty },
-    { value: 50, image: fifty },
+// static list of all available bills
+// value = bill amount in R$
+// image = bill image imported from assets
+// used by: withdraw.tsx and deposit.tsx to render one ValueCard per bill
+export const notes = [
+    { value: 2,   image: two },
+    { value: 5,   image: five },
+    { value: 10,  image: ten },
+    { value: 20,  image: twenty },
+    { value: 50,  image: fifty },
     { value: 100, image: onehundred },
     { value: 200, image: twohundred }
 ];
