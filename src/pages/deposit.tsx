@@ -4,14 +4,11 @@ import ValueCard from "../components/valueCard"; // card for each bill
 import { useNavigate } from "react-router-dom"; // enables navigation between pages
 import { notes } from "../data/notes"; // list of bills with image and value
 
-// defines what props this component receives from App.tsx
-interface DepositProps {
-    balance: number; // current balance coming from App.tsx
-    onDeposit: (value: number) => void; // function that sends the total to App.tsx to add to balance
-};
-
-export const Deposit = ({ balance, onDeposit }: DepositProps) => {
+export const Deposit = () => {
     const navigate = useNavigate(); // used to navigate between pages
+
+    // Holds the balance state — starts at R$1000
+    const [balance, setBalance] = useState(1000);
 
     // tracks how many of each bill the user selected
     // Record<number, number> = object where key is the bill value and value is the quantity
@@ -30,7 +27,7 @@ export const Deposit = ({ balance, onDeposit }: DepositProps) => {
     // runs when user clicks "Depositar"
     const handleDeposit = () => {
         if (totalValue === 0) return alert("Selecione ao menos uma cédula."); // nothing selected
-        onDeposit(totalValue); // sends total to App.tsx → App adds to balance
+        setBalance(balance + totalValue); // Add received notes to the current balance.
         setQuantities({}); // resets all bill quantities to 0
         alert("Depósito realizado com sucesso!");
     };
@@ -54,6 +51,10 @@ export const Deposit = ({ balance, onDeposit }: DepositProps) => {
                             value={note.value}
                             quantity={quantities[note.value] ?? 0} // how many of this bill the user selected
                             onQuantityChange={(q) => setQuantities({...quantities, [note.value]: q})} // updates quantity when user clicks + or -
+                            // q = new quantity sent by ValueCard when user clicks + or -
+                            // {...quantities} = copies all current quantities to avoid losing other selected bills
+                            // [note.value]: q = updates only the current bill with the new quantity
+                            // example: quantities = { 5: 1 }, user clicks + on R$2 → { 5: 1, 2: 1 }
                         />
                     </div>
                 ))}

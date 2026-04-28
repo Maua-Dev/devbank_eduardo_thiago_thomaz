@@ -2,12 +2,15 @@
 interface ValueCardProps {
     image: string; // bill image URL from assets
     value: number; // bill value (2, 5, 10, 20, 50, 100, 200)
-    quantity: number; // how many of this bill the user selected — controlled by parent
-    onQuantityChange: (quantity: number) => void; // notifies parent when user clicks + or -
+    quantity: number; // current quantity — read only, controlled by parent state
+    onQuantityChange: (quantity: number) => void; // receives new quantity from parent and notifies it when user clicks + or -
+    //A function that returns void and only executes
 }
 
 const ValueCard = ({ image, value, quantity, onQuantityChange }: ValueCardProps) => {
-    // if quantity is already 0, do nothing — prevents negative values
+    // quantity > 0 check prevents negative values
+    // quantity - 1 calculates the new value but does NOT modify quantity
+    // sends the new value to parent via onQuantityChange → parent updates state → React re-renders with new quantity
     const minus = () => quantity > 0 ? onQuantityChange(quantity - 1) : 0;
     const plus = () => onQuantityChange(quantity + 1); // no limit on max quantity
 
@@ -23,7 +26,7 @@ const ValueCard = ({ image, value, quantity, onQuantityChange }: ValueCardProps)
                 <div className="w-25 h-10 flex justify-center items-center m-5 bg-blue-300 rounded-xl">Quantidade</div>
                 <div className="w-30 h-10 flex justify-between items-center bg-white mx-3 p-3 rounded-xl">
                     <button onClick={minus} className="cursor-pointer text-2xl">-</button>
-                    <span>{quantity}</span> {/* quantity comes from parent state, not local state */}
+                    <span>{quantity}</span> {/* read only — value comes from parent state, not local state */}
                     <button onClick={plus} className="cursor-pointer">+</button>
                 </div>
             </section>

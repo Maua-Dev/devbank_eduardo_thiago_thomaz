@@ -4,16 +4,16 @@ import ValueCard from "../components/valueCard"; // card for each bill
 import { useNavigate } from "react-router-dom"; // enables navigation between pages
 import { notes } from "../data/notes"; // list of bills with image and value
 
-// defines what props this component receives from App.tsx
-interface WithdrawProps {
-    balance: number; // current balance coming from App.tsx
-    onWithdraw: (value: number) => void; // function that sends the total to App.tsx to subtract from balance
-};
-
-export const Withdraw = ({ balance, onWithdraw }: WithdrawProps) => {
+export const Withdraw = () => {
     const navigate = useNavigate(); // used to navigate between pages
 
-    // tracks how many of each bill the user selected
+    
+    // Holds the balance state — starts at R$1000
+    const [balance, setBalance] = useState(1000);
+    // balance = current value
+    // setBalance = function to update the value
+
+    
     // Record<number, number> = object where key is the bill value and value is the quantity
     // example: { 2: 3, 5: 1 } = 3 bills of R$2 and 1 bill of R$5
     // starts empty {} — no bills selected
@@ -31,7 +31,7 @@ export const Withdraw = ({ balance, onWithdraw }: WithdrawProps) => {
     const handleWithdraw = () => {
         if (totalValue === 0) return alert("Selecione ao menos uma cédula."); // nothing selected
         if (totalValue > balance) return alert("Saldo insuficiente"); // not enough balance
-        onWithdraw(totalValue); // sends total to App.tsx → App subtracts from balance
+        setBalance(balance - totalValue); // Remove the notes from the current balance.
         setQuantities({}); // resets all bill quantities to 0
         alert("Saque realizado com sucesso!");
     };
@@ -55,6 +55,10 @@ export const Withdraw = ({ balance, onWithdraw }: WithdrawProps) => {
                             value={note.value}
                             quantity={quantities[note.value] ?? 0} // how many of this bill the user selected
                             onQuantityChange={(q) => setQuantities({...quantities, [note.value]: q})} // updates quantity when user clicks + or -
+                            // q = new quantity sent by ValueCard when user clicks + or -
+                            // {...quantities} = copies all current quantities to avoid losing other selected bills
+                            // [note.value]: q = updates only the current bill with the new quantity
+                            // example: quantities = { 5: 1 }, user clicks + on R$2 → { 5: 1, 2: 1 }
                         />
                     </div>
                 ))}
