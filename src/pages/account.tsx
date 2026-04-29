@@ -14,7 +14,7 @@ export default function Account() {
         // Atualizamos a tela com o valor que veio da API
         // ATENÇÃO: Dependendo de como a sua equipa construiu a API, 
         // a propriedade pode chamar-se 'saldo', 'balance', 'value', etc.
-        setBalance(dadosDaConta.balance); 
+        setBalance(dadosDaConta.current_balance);
         
       } catch (erro) {
         console.error("Erro ao carregar o saldo da API:", erro);

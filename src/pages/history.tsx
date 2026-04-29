@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"; // manages component state
 import { useNavigate } from "react-router-dom"; // enables navigation between pages
-import { getTransactions } from "../services/api"; // fetches transaction history from GET /transactions
+import { getHistory } from "../services/api"; // fetches transaction history from GET /transactions
 import TransactionCard from "../components/transactionCard"; // card that displays each transaction
 
 export const History = () => {
@@ -14,9 +14,10 @@ export const History = () => {
     // TODO: backend must implement GET /transactions returning this format:
     // [{ id, type: "deposito" | "saque", value, date, balance }]
     useEffect(() => {
-        getTransactions().then((data) => {
-            if (Array.isArray(data)) { // safety check — only saves if API returned a list
-                setTransactions(data);
+        getHistory().then((data) => {
+            if (Array.isArray(data.all_transactions)) { // safety check — only saves if API returned a list
+                setTransactions([...data.all_transactions].reverse()); // sets older transactions to be at the bottom
+                // the '...' copies the array before reversing, preventing bugs
             }
         });
     }, []); // [] means runs only once on mount
@@ -32,20 +33,20 @@ export const History = () => {
             {/* maps through transactions list and renders one TransactionCard per item */}
             {/* each card expects: type, value, date, balance */}
             <section className="flex flex-col items-center mx-20 gap-2">
-                {transactions.map((transaction: any) => (
-                    <div key={transaction.id} className="w-full max-w-4xl">
+                {transactions.map((transaction: any, index: number) => (
+                    <div key={index} className="w-full max-w-4xl">
                         <TransactionCard
-                            type={transaction.type as "deposito" | "saque"} // "deposito" or "saque"
-                            value={transaction.value}   // transaction amount
-                            date={transaction.date}     // transaction date
-                            balance={transaction.balance} // balance after transaction
+                            type={transaction.type as "deposit" | "withdraw"} // deposit or withdraw
+                            value={transaction.value} // transaction amount
+                            date={new Date(transaction.timestamp).toLocaleDateString("pt-BR")} // uses object Date to set date in portuguese 
+                            balance={transaction.current_balance} // balance after transaction
                         />
                     </div>
                 ))}
             </section>
 
             <section className="flex justify-center items-center my-10">
-                <button onClick={() => navigate("/")} className="w-60 h-20 bg-blue-500 text-white rounded-xl mx-10 cursor-pointer">
+                <button onClick={() => navigate("/account")} className="w-60 h-20 bg-blue-500 text-white rounded-xl mx-10 cursor-pointer">
                     <p className="text-4xl">Voltar</p>
                 </button>
             </section>

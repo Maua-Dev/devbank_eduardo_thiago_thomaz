@@ -3,12 +3,13 @@
 // no other file should use fetch() directly
 // ─────────────────────────────────────────────
 
-// stores the API link — set by App.tsx on startup
-export let BASE_URL = "";
+// reads BASE_URL from sessionStorage on start
+export let BASE_URL = sessionStorage.getItem("devbank_url") ?? "";
 
 // called by App.tsx to define the API URL before any component loads
 export const setBaseUrl = (url: string) => {
-    BASE_URL = url;
+    BASE_URL = url.endsWith("/") ? url.slice(0, -1) : url;
+    sessionStorage.setItem("devbank_url", BASE_URL); // prevents not losing data upon refresh
 };
 
 // GET / → returns: { name, agency, account, current_balance }
@@ -19,23 +20,29 @@ export const getAccount = async () => {
     return data;
 };
 
-// POST /transactions → sends: { type: "deposito" | "saque", value: number }
-// used by: withdraw.tsx and deposit.tsx when user clicks "Sacar" or "Depositar"
-// TODO: backend must accept this format and save the transaction
-export const postTransaction = async (type: "deposito" | "saque", value: number) => {
-    const response = await fetch(`${BASE_URL}/transactions`, {
+
+// POST /deposit
+export const postDeposit = async (values: Record<number, number>) => {
+    const response = await fetch(`${BASE_URL}/deposit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, value })
+        body: JSON.stringify( values )
     });
     return response.json();
 };
 
-// GET /transactions → returns: [{ id, type, value, date, balance }]
-// used by: history.tsx to display the transaction history
-// TODO: backend must implement this endpoint
-export const getTransactions = async () => {
-    const response = await fetch(`${BASE_URL}/transactions`);
-    const data = await response.json();
-    return data;
+// POST /withdraw
+export const postWithdraw = async (values: Record<number, number>) => {
+    const response = await fetch(`${BASE_URL}/withdraw`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify( values )
+    });
+    return response.json();
+};
+
+// GET /history
+export const getHistory = async () => {
+    const response = await fetch(`${BASE_URL}/history`);
+    return response.json();
 };

@@ -5,13 +5,11 @@ import Account from "./pages/account";
 import { Withdraw } from './pages/withdraw' // "/withdraw"
 import { Deposit } from "./pages/deposit"; // "/deposit"
 import { History } from './pages/history'  // "/history"
-import { setBaseUrl } from "./services/api"; // sets the API URL
 
 // sets BASE_URL in api.ts before any component loads
 // all API calls (getAccount, postTransaction, getTransactions) depend on this
 // URL comes from .env file (VITE_API_URL)
 // TODO: when input field is ready in home.tsx, remove this line
-setBaseUrl(import.meta.env.VITE_API_URL);
 
 function App() {
   return (

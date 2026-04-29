@@ -3,7 +3,7 @@ import Balance from "../components/balance"; // shows current balance and total 
 import ValueCard from "../components/valueCard"; // card for each bill
 import { useNavigate } from "react-router-dom"; // enables navigation between pages
 import { notes } from "../data/notes"; // list of bills with image and value
-import { getAccount, postTransaction } from "../services/api"; // API calls
+import { getAccount, postWithdraw } from "../services/api"; // API calls
 
 export const Withdraw = () => {
     const navigate = useNavigate();
@@ -28,12 +28,21 @@ export const Withdraw = () => {
         return total + (quantities[note.value] ?? 0) * note.value;
     }, 0);
 
+    // builds a payload with the bills, so that the API reads it fine
+    const billsPayload = () => {
+        return notes.reduce((payload, note) => {
+            payload[note.value] = quantities[note.value] ?? 0;
+            return payload;
+        }, {} as Record<number, number>);
+    };
+
     // runs when user clicks "Sacar"
     const handleWithdraw = async () => {
         if (totalValue === 0) return alert("Selecione ao menos uma cédula.");
         if (totalValue > balance) return alert("Saldo insuficiente");
-        await postTransaction("saque", totalValue); // sends { type: "saque", value: totalValue } to POST /transactions
-        setBalance(balance - totalValue); // updates balance locally
+        const payload = billsPayload();
+        const response = await postWithdraw(payload);
+        setBalance(response.current_balance); // updates balance locally
         setQuantities({}); // resets all quantities to 0
         alert("Saque realizado com sucesso!");
     };
@@ -65,7 +74,7 @@ export const Withdraw = () => {
             </section>
 
             <section className="flex justify-center items-center my-8">
-                <button onClick={() => navigate("/")} className="w-60 h-20 bg-blue-500 text-white rounded-xl mx-10 cursor-pointer"><p className="text-4xl">Voltar</p></button>
+                <button onClick={() => navigate("/account")} className="w-60 h-20 bg-blue-500 text-white rounded-xl mx-10 cursor-pointer"><p className="text-4xl">Voltar</p></button>
                 <button onClick={handleWithdraw} className="w-60 h-20 bg-blue-500 text-white rounded-xl mx-10 cursor-pointer"><p className="text-4xl">Sacar</p></button>
             </section>
         </main>

@@ -1,7 +1,7 @@
 // defines what data each transaction card expects to receive
 // all fields come from GET /transactions response
 interface TransactionCardProps {
-    type: "deposito" | "saque"; // determines card color and title
+    type: "deposit" | "withdraw"; // determines card color and title
     value: number;              // transaction amount
     date: string;               // transaction date
     balance: number;            // balance after transaction
@@ -9,7 +9,7 @@ interface TransactionCardProps {
 
 const TransactionCard = ({ type, value, date, balance }: TransactionCardProps) => {
     // if type is "deposito" → green header, if "saque" → red header
-    const isDeposit = type === "deposito";
+    const isDeposit = type === "deposit";
     const headerColor = isDeposit ? "bg-green-700" : "bg-red-600";
     const headerTitle = isDeposit ? "Deposito" : "Saque";
 
