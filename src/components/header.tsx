@@ -15,14 +15,13 @@ const Header = () => {
     // runs once when header loads — fetches name, agency and account from GET /
     // data.name, data.agency, data.account come from the API response
     useEffect(() => {
-        const url = sessionStorage.getItem("devbank_url")
-        if (!url) return; // doesnt get account if theres no url
+        if (!BASE_URL) return; // doesnt get account if theres no url
         getAccount().then((data) => {
             setName(data.name);       // "Vitor Soller"
             setAgency(data.agency);   // "0000"
             setAccount(data.account); // "00000-0"
         });
-    }, [location.pathname]); // [location.pathname] means it runs whenever the route changes
+    }, []); // [location.pathname] means runs whenever the route changes
 
     const validateLogoRedirection = () => {
         if (location.pathname !== "/") {
