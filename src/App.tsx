@@ -17,7 +17,7 @@ function App() {
       <Header /> {/* shows on every page — fetches name, agency and account from API */}
       <Routes> {/* decides which page to render based on the URL */}
         <Route path="/" element={<Home />} />  {/* Home page */}
-        <Route path="/account" element={<Account />} />   
+        <Route path="/account" element={<Account />} />   {/* Account page */}
         <Route path="/withdraw" element={<Withdraw />} /> {/* fetches balance and sends withdraw to API */}
         <Route path="/deposit" element={<Deposit />} />   {/* fetches balance and sends deposit to API */}
         <Route path="/history" element={<History />} />   {/* fetches transaction list from API — needs backend */}
