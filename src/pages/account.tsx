@@ -8,17 +8,11 @@ export default function Account() {
   useEffect(() => {
     async function carregarSaldo() {
       try {
-        // Vai ao back-end buscar os dados da conta
         const dadosDaConta = await getAccount();
-        
-        // Atualizamos a tela com o valor que veio da API
-        // ATENÇÃO: Dependendo de como a sua equipa construiu a API, 
-        // a propriedade pode chamar-se 'saldo', 'balance', 'value', etc.
-        setBalance(dadosDaConta.current_balance);
+        setBalance(dadosDaConta.current_balance); 
         
       } catch (erro) {
         console.error("Erro ao carregar o saldo da API:", erro);
-        // Se a API falhar ou estiver desligada, podemos colocar um saldo de segurança/erro
         setBalance(0); 
       }
     }
