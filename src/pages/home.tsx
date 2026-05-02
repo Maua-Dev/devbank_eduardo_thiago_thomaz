@@ -43,6 +43,16 @@ export default function Home() {
             alert(mensagemErro);
             return;
         }
+        
+        //validation 4 - checks if inputted URL = real URL
+        const urlSecreta = import.meta.env.VITE_API_SECRETA;
+    
+    if (urlSecreta && urlLimpa !== urlSecreta) {
+      const mensagemErro = "Acesso negado: A URL fornecida não é a autorizada para este ambiente.";
+      setError(mensagemErro);
+      alert(mensagemErro);
+      return;
+    }
 
         // all validations passed — saves URL in BASE_URL and sessionStorage
         setBaseUrl(urlLimpa);
